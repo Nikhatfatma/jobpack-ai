@@ -2,18 +2,24 @@
 
 import React, { useState } from 'react';
 import styles from './ExportScreen.module.css';
+import { JobPack } from '@/types';
 
 interface ExportScreenProps {
+  data: JobPack;
   onBack: () => void;
-  onGeneratePDF: () => void;
+  onGeneratePDF?: () => void;
 }
 
-export const ExportScreen: React.FC<ExportScreenProps> = ({ onBack, onGeneratePDF }) => {
+export const ExportScreen: React.FC<ExportScreenProps> = ({ data, onBack, onGeneratePDF }) => {
   const [format, setFormat] = useState('pdf');
 
   const handleExport = () => {
     if (format === 'pdf') {
-      onGeneratePDF();
+      if (onGeneratePDF) {
+        onGeneratePDF();
+      } else {
+        alert('PDF Generation will be available in the next release.');
+      }
     } else {
       alert('Export to ' + format + ' is not implemented in this demo.');
     }

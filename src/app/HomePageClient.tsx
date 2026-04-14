@@ -120,8 +120,8 @@ export default function HomePageClient() {
         {activeScreen === 'dash' && <Dashboard onNavigate={onNavigate} />}
         {activeScreen === 'upload' && <Upload onBack={() => setActiveScreen('dash')} onBeginProcessing={onBeginProcessing} />}
         {activeScreen === 'proc' && <Processing file={uploadFile} onComplete={onExtractionComplete} onCancel={() => setActiveScreen('upload')} />}
-        {activeScreen === 'pack' && <JobPackEditor initialData={jobData} onExport={(data) => { setJobData(data); setActiveScreen('export'); }} />}
-        {activeScreen === 'export' && <ExportScreen onBack={() => setActiveScreen('pack')} onGeneratePDF={generatePDF} />}
+        {activeScreen === 'pack' && <JobPackEditor data={jobData} onExport={(data: import('@/types').JobPack) => { setJobData(data); setActiveScreen('export'); }} />}
+        {activeScreen === 'export' && <ExportScreen data={jobData} onBack={() => setActiveScreen('pack')} onGeneratePDF={generatePDF} />}
       </div>
     </div>
   );

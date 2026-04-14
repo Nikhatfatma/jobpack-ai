@@ -219,7 +219,7 @@ export const ExtractionFlow: React.FC = () => {
           <JobPackEditor
             data={jobPackData}
             onSave={(updated) => setJobPackData(updated)}
-            onExport={() => setCurrentStep(4)}
+            onExport={(data) => { setJobPackData(data); setCurrentStep(4); }}
           />
         )}
 

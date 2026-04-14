@@ -31,7 +31,7 @@ export function useJobPack(initialData: JobPack) {
       const next = deepClone(prev);
       const list = next[listName];
       if (Array.isArray(list)) {
-        list.push({ ...template, id: generateId() });
+        (list as any[]).push({ ...template, id: generateId() });
       }
       return next;
     });

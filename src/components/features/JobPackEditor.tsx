@@ -2,31 +2,33 @@
 
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import styles from './JobPackEditor.module.css';
+import { JobPack } from '@/types';
 
 interface JobPackEditorProps {
-  initialData?: any;
-  onExport: (data: any) => void;
+  data: JobPack;
+  onSave?: (data: JobPack) => void;
+  onExport: (data: JobPack) => void;
 }
 
-export const JobPackEditor: React.FC<JobPackEditorProps> = ({ initialData, onExport }) => {
+export const JobPackEditor: React.FC<JobPackEditorProps> = ({ data, onSave, onExport }) => {
   const [activeTab, setActiveTab] = useState('s1');
   const jpRef = useRef<HTMLDivElement>(null);
   const [showAiBanner, setShowAiBanner] = useState(true);
   
   // Single source of truth for form state
   const [formData, setFormData] = useState<any>({
-    title: initialData?.title || "",
-    metadata: initialData?.metadata || {},
-    wellData: initialData?.wellData || {},
-    casingStrings: initialData?.casingStrings?.length ? initialData.casingStrings : [
+    title: data?.title || "",
+    metadata: data?.metadata || {},
+    wellData: data?.wellData || {},
+    casingStrings: data?.casingStrings?.length ? data.casingStrings : [
       { name: "", interval: "", size: "", weight: "", grade: "", threads: "", hole: "" }
     ],
-    equipmentList: initialData?.equipmentList || [],
-    businessOverview: initialData?.businessOverview || [],
-    preJobPrep: initialData?.preJobPrep || [],
-    runningProcedures: initialData?.runningProcedures || [],
-    cementingProcedures: initialData?.cementingProcedures || [],
-    acceptanceCriteria: initialData?.acceptanceCriteria || [],
+    equipmentList: data?.equipmentList || [],
+    businessOverview: data?.businessOverview || [],
+    preJobPrep: data?.preJobPrep || [],
+    runningProcedures: data?.runningProcedures || [],
+    cementingProcedures: data?.cementingProcedures || [],
+    acceptanceCriteria: data?.acceptanceCriteria || [],
     checklist: [
       { id: 1, label: 'All 6 metadata fields filled — no blanks, no TBD, no ASAP.', checked: false },
       { id: 2, label: 'PO / AFE number confirmed with customer before mobilisation.', checked: false },
@@ -161,10 +163,10 @@ export const JobPackEditor: React.FC<JobPackEditorProps> = ({ initialData, onExp
 
         {/* Content */}
         <div id="jp" ref={jpRef} onScroll={onScroll} style={{ flex: 1, overflowY: 'auto', padding: '16px', display: 'flex', flexDirection: 'column', gap: '14px', background: 'var(--bg)' }}>
-          {showAiBanner && initialData && (
+          {showAiBanner && data && (
             <div style={{ display: 'flex', alignItems: 'center', gap: '9px', padding: '10px 14px', background: 'var(--org-lt)', border: '1.5px solid var(--org-md)', borderRadius: 'var(--rad-sm)', fontSize: '11px', flexShrink: 0 }}>
               <div className="spin" style={{ width: '11px', height: '11px', border: '2px solid var(--org-md)', borderTopColor: 'var(--org)' }}></div>
-              <span style={{ fontWeight: 800, color: 'var(--org-dk)' }}>AI populated {(initialData.equipmentList?.length || 0) + Object.keys(wd).length + Object.keys(md).length} fields</span>
+              <span style={{ fontWeight: 800, color: 'var(--org-dk)' }}>AI populated {(data.equipmentList?.length || 0) + Object.keys(wd).length + Object.keys(md).length} fields</span>
               <span style={{ color: 'var(--t2)', marginLeft: '3px' }}>from your diagram. Orange-bordered inputs are AI-extracted — verify before exporting.</span>
               <button onClick={() => setShowAiBanner(false)} style={{ marginLeft: 'auto', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--t2)', fontSize: '16px', lineHeight: 1 }}>×</button>
             </div>
