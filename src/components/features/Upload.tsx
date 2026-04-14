@@ -15,6 +15,7 @@ export const Upload: React.FC<UploadProps> = ({ onBack, onBeginProcessing }) => 
     if (e.target.files && e.target.files[0]) {
       setFile(e.target.files[0]);
     }
+    e.target.value = '';
   };
 
   const handleDrop = (e: React.DragEvent) => {
@@ -58,7 +59,7 @@ export const Upload: React.FC<UploadProps> = ({ onBack, onBeginProcessing }) => 
                   <div style={{display:'flex',gap:'7px',justifyContent:'center',flexWrap:'wrap',marginBottom:'18px'}}>
                     <span className="bdg bb">PDF</span><span className="bdg bg">PNG</span><span className="bdg bg">JPG</span><span className="bdg ba">DWG</span><span style={{border:'1.5px solid var(--bd2)',padding:'3px 9px',fontSize:'10px',fontWeight:700,color:'var(--t3)',borderRadius:'var(--rad-sm)'}}>TIFF</span>
                   </div>
-                  <button className="btn btn-org" onClick={(e) => e.stopPropagation()}>Browse files</button>
+                  <button className="btn btn-org" onClick={(e) => { e.stopPropagation(); fileInputRef.current?.click(); }}>Browse files</button>
                 </div>
                 <input ref={fileInputRef} type="file" style={{display:'none'}} onChange={handleFileChange} />
                 
