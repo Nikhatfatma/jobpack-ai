@@ -2,6 +2,7 @@
 
 import React from 'react';
 import styles from './AppHeader.module.css';
+import { Logo } from '@/components/ui/Logo';
 
 interface AppHeaderProps {
   activeScreen: string;
@@ -31,21 +32,7 @@ export const AppHeader: React.FC<AppHeaderProps> = ({ activeScreen, onNavigate, 
       {/* ── HEADER ── */}
       <div className={styles.hdr}>
         <div className={styles.logo} onClick={() => onNavigate('dash')}>
-          <div className={styles.logoIcon}>
-            <svg width="44" height="44" viewBox="0 0 44 44" fill="none">
-              <rect width="44" height="44" rx="8" fill="#E6F2FA"/>
-              <path d="M11 30 L21 12" stroke="#1469A8" strokeWidth="2.4" strokeLinecap="round"/>
-              <path d="M21 12 L24 19" stroke="#1469A8" strokeWidth="2.4" strokeLinecap="round"/>
-              <path d="M24 19 L34 30" stroke="#1469A8" strokeWidth="2.4" strokeLinecap="round"/>
-              <path d="M31 24 L34 30 L28 30" stroke="#1469A8" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/>
-              <path d="M14 25 L11 30 L17 30" stroke="#1469A8" strokeWidth="2.4" strokeLinecap="round" strokeLinejoin="round"/>
-            </svg>
-          </div>
-          <div className={styles.logoTxt}>
-            <div className={styles.logoAmazing}>Amazing</div>
-            <div className={styles.logoBr}>BUSINESS RESULTS</div>
-            <div className={styles.logoTag}>Master the plan, Execute perfection</div>
-          </div>
+          <Logo width={160} height={40} />
         </div>
 
         <div className={styles.hdrBadge}>
