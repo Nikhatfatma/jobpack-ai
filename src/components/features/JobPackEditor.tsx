@@ -29,7 +29,7 @@ export const JobPackEditor: React.FC<JobPackEditorProps> = ({ data, onSave, onEx
     runningProcedures: data?.runningProcedures || [],
     cementingProcedures: data?.cementingProcedures || [],
     acceptanceCriteria: data?.acceptanceCriteria || [],
-    checklist: [
+    checklist: data?.checklist || [
       { id: 1, label: 'All 6 metadata fields filled — no blanks, no TBD, no ASAP.', checked: false },
       { id: 2, label: 'PO / AFE number confirmed with customer before mobilisation.', checked: false },
       { id: 3, label: 'LOM data sheets verified against physical equipment on location.', checked: false },
@@ -41,7 +41,7 @@ export const JobPackEditor: React.FC<JobPackEditorProps> = ({ data, onSave, onEx
       { id: 9, label: 'Cement blend working time confirmed sufficient for full sequence.', checked: false },
       { id: 10, label: 'Contingency plans reviewed — hanger, ball, packer, and release scenarios.', checked: false },
     ],
-    edgeCases: [
+    edgeCases: data?.edgeCases || [
        { id: 1, test: "Hanger does not hang on first pressure attempt.", expected: "Increase in 500 kPa increments. If unable, raise position, set on bottom ensuring packer stays 2 m from float collar, or retrieve liner." },
        { id: 2, test: "Setting tool does not release hydraulically.", expected: "Apply left-hand rotation at 6,305 N·m to shear 2 brass pins. Body turns 1/4 turn, drops 45 mm. Pick up 1 m to confirm collet release." }
     ]
@@ -128,7 +128,6 @@ export const JobPackEditor: React.FC<JobPackEditorProps> = ({ data, onSave, onEx
         <span style={{ background: 'var(--org)', color: 'white', padding: '4px 12px', fontSize: '10px', fontWeight: 800, letterSpacing: '.06em', borderRadius: '20px', flexShrink: 0 }}>{md.quoteNo?.split(' ')[0] || 'NEW'}</span>
         <input style={{ flex: 1, fontSize: '14px', fontWeight: 800, border: 'none', background: 'transparent', color: 'var(--navy)', outline: 'none', padding: '3px 8px', minWidth: 0, borderRadius: 'var(--rad-sm)' }} value={formData.title} onChange={e => updateTitle(e.target.value)} placeholder="Enter Job Title" />
         <div style={{ display: 'flex', gap: '7px', flexShrink: 0 }}>
-          <button className="btn btn-org-o sm">✦ AI review ↗</button>
           <button className="btn btn-org sm" onClick={handleExport}>Export →</button>
         </div>
       </div>
@@ -164,10 +163,9 @@ export const JobPackEditor: React.FC<JobPackEditorProps> = ({ data, onSave, onEx
         {/* Content */}
         <div id="jp" ref={jpRef} onScroll={onScroll} style={{ flex: 1, overflowY: 'auto', padding: '16px', display: 'flex', flexDirection: 'column', gap: '14px', background: 'var(--bg)' }}>
           {showAiBanner && data && (
-            <div style={{ display: 'flex', alignItems: 'center', gap: '9px', padding: '10px 14px', background: 'var(--org-lt)', border: '1.5px solid var(--org-md)', borderRadius: 'var(--rad-sm)', fontSize: '11px', flexShrink: 0 }}>
-              <div className="spin" style={{ width: '11px', height: '11px', border: '2px solid var(--org-md)', borderTopColor: 'var(--org)' }}></div>
-              <span style={{ fontWeight: 800, color: 'var(--org-dk)' }}>AI populated {(data.equipmentList?.length || 0) + Object.keys(wd).length + Object.keys(md).length} fields</span>
-              <span style={{ color: 'var(--t2)', marginLeft: '3px' }}>from your diagram. Orange-bordered inputs are AI-extracted — verify before exporting.</span>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '9px', padding: '10px 14px', background: 'var(--s1)', border: '1.5px solid var(--bd)', borderRadius: 'var(--rad-sm)', fontSize: '11px', flexShrink: 0 }}>
+              <span style={{ fontWeight: 800, color: 'var(--t1)' }}>Template populated {(data.equipmentList?.length || 0) + Object.keys(wd).length + Object.keys(md).length} fields</span>
+              <span style={{ color: 'var(--t2)', marginLeft: '3px' }}>Verify the extracted technical data before exporting the program.</span>
               <button onClick={() => setShowAiBanner(false)} style={{ marginLeft: 'auto', background: 'none', border: 'none', cursor: 'pointer', color: 'var(--t2)', fontSize: '16px', lineHeight: 1 }}>×</button>
             </div>
           )}
@@ -181,11 +179,11 @@ export const JobPackEditor: React.FC<JobPackEditorProps> = ({ data, onSave, onEx
                   <option>High</option><option>Urgent</option><option>Medium</option><option>Low</option>
                 </select>
               </div>
-              <Field label="Well name" value={md.wellName || ""} onChange={(v: string) => updateMeta('wellName', v)} ai hint="✦ Extracted from diagram header" />
-              <Field label="Rig" value={md.rig || ""} onChange={(v: string) => updateMeta('rig', v)} ai />
-              <Field label="Customer" value={md.customer || ""} onChange={(v: string) => updateMeta('customer', v)} ai />
+              <Field label="Well name" value={md.wellName || ""} onChange={(v: string) => updateMeta('wellName', v)} hint="Primary identifier for the wellbore" />
+              <Field label="Rig" value={md.rig || ""} onChange={(v: string) => updateMeta('rig', v)} />
+              <Field label="Customer" value={md.customer || ""} onChange={(v: string) => updateMeta('customer', v)} />
               <Field label="Sales rep" value={md.salesRep || ""} onChange={(v: string) => updateMeta('salesRep', v)} />
-              <Field label="Quote no." value={md.quoteNo || ""} onChange={(v: string) => updateMeta('quoteNo', v)} ai />
+              <Field label="Quote no." value={md.quoteNo || ""} onChange={(v: string) => updateMeta('quoteNo', v)} />
               <Field label="Due date" value={md.dueDate || ""} onChange={(v: string) => updateMeta('dueDate', v)} />
               <div style={{ gridColumn: '1 / -1' }}>
                 <Field label="Assignee" value={md.assignee || ""} onChange={(v: string) => updateMeta('assignee', v)} />
@@ -195,15 +193,15 @@ export const JobPackEditor: React.FC<JobPackEditorProps> = ({ data, onSave, onEx
 
           <Section id="s2" title="Well & casing information" badge="✦ AI extracted">
             <div className={styles.g3} style={{ marginBottom: '14px' }}>
-              <Field label="TD (mMD)" value={wd.td || ""} onChange={(v: string) => updateWell('td', v)} ai />
-              <Field label="TVD" value={wd.tvd || ""} onChange={(v: string) => updateWell('tvd', v)} ai />
-              <Field label="Heel depth" value={wd.heelDepth || ""} onChange={(v: string) => updateWell('heelDepth', v)} ai />
-              <Field label="Liner top" value={wd.linerTop || ""} onChange={(v: string) => updateWell('linerTop', v)} ai />
-              <Field label="Liner length" value={wd.linerLength || ""} onChange={(v: string) => updateWell('linerLength', v)} ai />
-              <Field label="Overlap" value={wd.overlap || ""} onChange={(v: string) => updateWell('overlap', v)} ai />
-              <Field label="Liner wt. (air)" value={wd.linerWeight || ""} onChange={(v: string) => updateWell('linerWeight', v)} ai />
-              <Field label="ICP depth" value={wd.icpDepth || ""} onChange={(v: string) => updateWell('icpDepth', v)} ai />
-              <Field label="Hole size" value={wd.holeSize || ""} onChange={(v: string) => updateWell('holeSize', v)} ai />
+              <Field label="TD (mMD)" value={wd.td || ""} onChange={(v: string) => updateWell('td', v)} />
+              <Field label="TVD" value={wd.tvd || ""} onChange={(v: string) => updateWell('tvd', v)} />
+              <Field label="Heel depth" value={wd.heelDepth || ""} onChange={(v: string) => updateWell('heelDepth', v)} />
+              <Field label="Liner top" value={wd.linerTop || ""} onChange={(v: string) => updateWell('linerTop', v)} />
+              <Field label="Liner length" value={wd.linerLength || ""} onChange={(v: string) => updateWell('linerLength', v)} />
+              <Field label="Overlap" value={wd.overlap || ""} onChange={(v: string) => updateWell('overlap', v)} />
+              <Field label="Liner wt. (air)" value={wd.linerWeight || ""} onChange={(v: string) => updateWell('linerWeight', v)} />
+              <Field label="ICP depth" value={wd.icpDepth || ""} onChange={(v: string) => updateWell('icpDepth', v)} />
+              <Field label="Hole size" value={wd.holeSize || ""} onChange={(v: string) => updateWell('holeSize', v)} />
             </div>
             <div style={{ fontSize: '9px', fontWeight: 800, color: 'var(--t3)', letterSpacing: '.09em', marginBottom: '8px' }}>Casing strings</div>
             <div style={{ overflowX: 'auto' }}>
@@ -236,7 +234,6 @@ export const JobPackEditor: React.FC<JobPackEditorProps> = ({ data, onSave, onEx
           <Section id="s4" title="Liner equipment required" 
             action={
               <div style={{ display: 'flex', alignItems: 'center', gap: '7px' }}>
-                <span className="bdg bg" style={{ fontSize: '9px' }}>✦ AI</span>
                 <button className="btn sm" onClick={() => addArrayItem('equipmentList', {description: ""})} style={{ background: 'rgba(255,255,255,.2)', color: 'white', borderColor: 'rgba(255,255,255,.3)', borderRadius: '14px' }}>+ Add row</button>
               </div>
             }
@@ -338,8 +335,8 @@ const Section = ({ id, title, sub, badge, action, children }: any) => (
 
 const Field = ({ label, value, onChange, ai, hint }: any) => (
   <div className={styles.fld}>
-    <div className={styles.flb}>{label} {ai && <span style={{ color: 'var(--org)' }}>✦ AI</span>}</div>
-    <input className={`${styles.fi} ${ai ? styles.aiFi : ''}`} value={value} onChange={e => onChange?.(e.target.value)} />
+    <div className={styles.flb}>{label}</div>
+    <input className={styles.fi} value={value} onChange={e => onChange?.(e.target.value)} />
     {hint && <div className={styles.aiH}>{hint}</div>}
   </div>
 );

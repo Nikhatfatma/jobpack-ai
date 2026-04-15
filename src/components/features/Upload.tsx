@@ -35,7 +35,7 @@ export const Upload: React.FC<UploadProps> = ({ onBack, onBeginProcessing }) => 
     <div id="s-upload" className="scr on">
       <div className="pb">
         <div style={{display:'flex',alignItems:'flex-start',justifyContent:'space-between',marginBottom:'20px'}}>
-          <div><div style={{fontSize:'20px',fontWeight:800,color:'var(--navy)'}}>New job pack</div><div style={{fontSize:'12px',color:'var(--t2)',marginTop:'3px'}}>Upload a stick diagram — AI extracts every field automatically</div></div>
+          <div><div style={{fontSize:'20px',fontWeight:800,color:'var(--navy)'}}>New job pack</div><div style={{fontSize:'12px',color:'var(--t2)',marginTop:'3px'}}>Upload a stick diagram — Standardized data extraction for engineering programs</div></div>
           <button className="btn sm" onClick={onBack}>← Back</button>
         </div>
         <div style={{display:'grid',gridTemplateColumns:'1fr 300px',gap:'14px',alignItems:'start'}}>

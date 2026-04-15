@@ -102,13 +102,13 @@ export const Processing: React.FC<ProcessingProps> = ({ file, onComplete, onCanc
         <div style={{width:'100%',maxWidth:'520px'}}>
           <div style={{textAlign:'center',marginBottom:'22px'}}>
             <div style={{fontSize:'10px',fontWeight:800,letterSpacing:'0.14em',color: hasError ? 'var(--amb)' : 'var(--org)',marginBottom:'10px'}}>
-              {hasError ? 'EXTRACTION FAILED' : 'AI EXTRACTION IN PROGRESS'}
+              {hasError ? 'ANALYSIS FAILED' : 'DOCUMENT ANALYSIS IN PROGRESS'}
             </div>
             <div style={{fontSize:'22px',fontWeight:800,color:'var(--navy)',marginBottom:'4px'}}>
-              {hasError ? 'Failed to process file' : 'Analysing your stick diagram'}
+              {hasError ? 'Failed to process file' : 'Analysing technical document'}
             </div>
             <div style={{fontSize:'12px',color:'var(--t2)'}}>
-              {hasError ? errorMessage : 'Amazing Business Results AI · Reading every tool, pressure, and depth...'}
+              {hasError ? errorMessage : 'Extracting tool sequences, pressures, and depths...'}
             </div>
           </div>
           <div className="card">
@@ -120,7 +120,7 @@ export const Processing: React.FC<ProcessingProps> = ({ file, onComplete, onCanc
                 </div>
                 <div style={{flex:1}}>
                   <div style={{fontSize:'12px',fontWeight:700,color:'var(--navy)'}}>{file ? file.name : 'Unknown_File'}</div>
-                  <div style={{fontSize:'10px',color:'var(--t2)',marginTop:'2px'}}>Processing via Gemini 2.0 Flash · OCR Active</div>
+                  <div style={{fontSize:'10px',color:'var(--t2)',marginTop:'2px'}}>Technical Analysis Engine · OCR Active</div>
                 </div>
                 <span className={`bdg ${hasError ? 'ba' : isDone ? 'bg' : 'ba'}`}>{hasError ? 'Error' : isDone ? 'Complete' : 'Processing'}</span>
               </div>
@@ -169,7 +169,7 @@ export const Processing: React.FC<ProcessingProps> = ({ file, onComplete, onCanc
 
               {hasError && (
                 <div style={{marginTop:'14px',padding:'13px 14px',background:'var(--amb-lt)',border:'1.5px solid var(--amb-bd)',borderRadius:'var(--rad-sm)',display:'flex',alignItems:'center',gap:'12px'}}>
-                  <div style={{flex:1}}><div style={{fontSize:'12px',fontWeight:800,color:'var(--amb)'}}>AI returned an error</div><div style={{fontSize:'11px',color:'var(--t2)'}}>{errorMessage}</div></div>
+                  <div style={{flex:1}}><div style={{fontSize:'12px',fontWeight:800,color:'var(--amb)'}}>Analysis error</div><div style={{fontSize:'11px',color:'var(--t2)'}}>{errorMessage}</div></div>
                   {onCancel && <button className="btn btn-org-o" onClick={onCancel}>← Go Back</button>}
                 </div>
               )}
